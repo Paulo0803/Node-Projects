@@ -1,28 +1,30 @@
 const express = require("Express");
 const app = express();
-const Handlebars = require('express-handlebars')
-const Sequelize = require('sequelize')
-
+const handlebars = require('express-handlebars')
+const bodyParser = require('body-parser')
 
 //configurar
     //Template Engine
-    app.engine('handlebars', Handlebars({ defaultLayout: 'main' }))
+    app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
     app.set('view engine', 'handlebars')
 
-    //conexão com o banco de dados mysql
-    const sequelize = new Sequelize('test', 'root', 'Paulo0108*', {
-        host: 'localhost',
-        dialect: 'mysql'
-    })
+    //body-parser config
+    app.use(bodyParser.urlencoded({extended: false}))
+    app.use(bodyParser.json())
 
 //ROTAS
 app.get('/cad', (req, res) => {
-    res.send('Rota Ativa')
+    res.render('formulario')
+})
+
+app.post('/coleta', (req, res) => {
+    res.send("Texto: " + req.body.titulo + "</br>Conteudo: " + req.body.conteudo)
 })
 
 
+
 app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/html/index.html")
+    res.sendFile(__dirname + "/html/sobre.html")
 })
 
 app.get("/sobre", function (req, res) {
